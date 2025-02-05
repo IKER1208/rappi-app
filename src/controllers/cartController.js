@@ -28,7 +28,16 @@ exports.getCart = async (req, res) => {
 
 exports.updateCart = async (req, res) => {
     try {
+        const { userId } = req.params;
+        const { productId, quantity } = req.body;
 
+        const cartItem = await Cart.findOne({ where: { userId, productId } });
+        if (!cartItem) {
+            return res.status(404).json({ message: 'Producto no encontrado en el carrito' });
+        }
+
+        await cartItem.update({ quantity });
+        res.json(cartItem);
 
     } catch (error) {
         res.status(500).json({ message: 'error al editar producto: ', error });

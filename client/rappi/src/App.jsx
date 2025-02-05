@@ -1,11 +1,28 @@
 // src/App.jsx
-
-import LoginForm from "./components/LoginForm";
+import { useState } from 'react';
+import LoginForm from './components/LoginForm';
+import ProductList from './components/ProductList';
+import Cart from './components/Cart';
+import OrderHistory from './components/OrderHistory';
 
 function App() {
+  const [user, setUser] = useState(null);
+
+  const handleLogin = (userData) => {
+    setUser(userData);
+  };
+
   return (
     <div>
-      <LoginForm />
+      {!user ? (
+        <LoginForm onLogin={handleLogin} />
+      ) : (
+        <div>
+          <ProductList />
+          <Cart userId={user.id} />
+          <OrderHistory userId={user.id} />
+        </div>
+      )}
     </div>
   );
 }

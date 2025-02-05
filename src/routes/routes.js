@@ -1,12 +1,14 @@
 const express = require('express');
+const authMiddleware = require('../middlewares/authMiddleware');
+const roleMiddleware = require('../middlewares/roleMiddleware'); // Asegúrate de que esta línea esté presente
+const cartController = require('../controllers/cartController');
+
 const route = express.Router();
 
 const authController = require('../controllers/authController');
 const catalogController = require('../controllers/catalogController');
-const cartController = require('../controllers/cartController');
 const orderController = require('../controllers/orderController');
 const deliveryController = require('../controllers/deliveryController');
-const { authMiddleware, roleMiddleware } = require('../middlewares/authMiddleware');
 
 
 

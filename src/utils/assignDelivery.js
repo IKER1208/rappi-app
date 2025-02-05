@@ -1,4 +1,6 @@
-const { Order, Delivery, User } = require('../models');
+const Order = require('../models/Order');
+const Delivery = require('../models/delivery');
+const User = require('../models/User');
 
 /**
  * Función para reasignar un pedido a otro repartidor disponible cuando el original cancela.

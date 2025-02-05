@@ -1,6 +1,6 @@
-const { Order, OrderStatus } = require('../models');
+const Order = require('../models/Order'), OrderStatus = require('../models/OrderStatus');
 
-exports.createOrder = async (req, res) => {
+const createOrder = async (req, res) => {
     try {
         const { userId, items, totalPrice } = req.body;
         const order = await Order.create({ userId, items, totalPrice, status: 'Pendiente' });
@@ -10,7 +10,18 @@ exports.createOrder = async (req, res) => {
     }
 };
 
-exports.updateOrderStatus = async (req, res) => {
+const getOrderHistory = async (req, res) => {
+    try {
+        const { userId } = req.params;
+        const orders = await Order.findAll({ where: { userId } });
+        res.json(orders);
+    } catch (error) {
+        res.status(500).json({ message: 'Error al obtener historial de pedidos', error });
+    }
+
+}
+
+const updateOrderStatus = async (req, res) => {
     try {
         const { orderId } = req.params;
         const { status } = req.body;
@@ -26,3 +37,9 @@ exports.updateOrderStatus = async (req, res) => {
         res.status(500).json({ message: 'Error al actualizar estado del pedido', error });
     }
 };
+
+module.exports = {
+    createOrder,
+    updateOrderStatus,
+    getOrderHistory
+}

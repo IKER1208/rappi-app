@@ -1,6 +1,6 @@
-const { Product } = require('../models');
+const { Product } = require('../models/Product');
 
-exports.getProducts = async (req, res) => {
+const getProducts = async (req, res) => {
     try {
         const products = await Product.findAll();
         res.json(products);
@@ -8,7 +8,7 @@ exports.getProducts = async (req, res) => {
         res.status(500).json({ message: 'Error al obtener productos', error });
     }
 };
-exports.postProduct = async (req, res) => {
+const postProduct = async (req, res) => {
     try {
         const { name, description, price } = req.body;
         const product = await Product.create({ name, description, price });
@@ -17,7 +17,7 @@ exports.postProduct = async (req, res) => {
         res.status(500).json({ message: 'Error al crear producto', error });
     }
 };
-exports.putProduct = async (req, res) => {
+const putProduct = async (req, res) => {
     try {
         const { id } = req.params;
         const { name, description, price } = req.body;
@@ -33,3 +33,9 @@ exports.putProduct = async (req, res) => {
         res.status(500).json({ message: 'Error al actualizar producto', error });
     }
 };
+
+module.exports = {
+    getProducts,
+    postProduct,
+    putProduct
+}

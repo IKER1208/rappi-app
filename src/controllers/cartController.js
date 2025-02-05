@@ -1,6 +1,6 @@
-const { Cart, Product } = require('../models');
+const Cart = require('../models/Cart'), Product = require('../models/Product');
 
-exports.addToCart = async (req, res) => {
+const addToCart = async (req, res, next) => {
     try {
         const { userId, productId, quantity } = req.body;
 
@@ -16,7 +16,7 @@ exports.addToCart = async (req, res) => {
     }
 };
 
-exports.getCart = async (req, res) => {
+const getCart = async (req, res) => {
     try {
         const { userId } = req.params;
         const cart = await Cart.findAll({ where: { userId }, include: Product });
@@ -26,7 +26,7 @@ exports.getCart = async (req, res) => {
     }
 };
 
-exports.updateCart = async (req, res) => {
+const updateCart = async (req, res) => {
     try {
         const { userId } = req.params;
         const { productId, quantity } = req.body;
@@ -45,3 +45,5 @@ exports.updateCart = async (req, res) => {
     }
 
 }
+
+module.exports = { addToCart, getCart, updateCart };

@@ -1,7 +1,7 @@
-const { Order } = require('../models');
+const Order = require('../models/Order');
 const assignDelivery = require('../utils/assignDelivery');
 
-exports.getOrdersForDelivery = async (req, res) => {
+const getOrdersForDelivery = async (req, res) => {
     try {
         const orders = await Order.findAll({ where: { status: 'Pendiente' } });
         res.json(orders);
@@ -10,7 +10,15 @@ exports.getOrdersForDelivery = async (req, res) => {
     }
 };
 
-exports.updateDeliveryStatus = async (req, res) => {
+const getAssignedOrders = async (req, res) => {
+    try {
+        const orders = await Order.findAll({ where: { status: 'Asignado' } });
+        res.json(orders);
+    } catch (error) {
+        res.status(500).json({ message: 'Error al obtener pedidos', error });
+    }
+}
+const updateDeliveryStatus = async (req, res) => {
     try {
         const { orderId } = req.params;
         const { status } = req.body;
@@ -30,3 +38,4 @@ exports.updateDeliveryStatus = async (req, res) => {
         res.status(500).json({ message: 'Error al actualizar estado del pedido', error });
     }
 };
+module.exports = { getOrdersForDelivery, updateDeliveryStatus, getAssignedOrders };

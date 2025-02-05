@@ -12,11 +12,11 @@ const register = async (req, res) => {
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
-        const user = await User.create({ name, email, password: hashedPassword, role });
+        const newUser = await User.create({ name, email, password: hashedPassword, role });
 
-        res.status(201).json({ message: 'Usuario registrado exitosamente' });
+        res.status(201).json({ message: 'Usuario registrado exitosamente', user: newUser });
     } catch (error) {
-        res.status(500).json({ message: 'Error al registrar usuario', error });
+        res.status(500).json({ message: 'Error al registrar usuario', error: error.message });
     }
 };
 
@@ -38,11 +38,11 @@ const login = async (req, res) => {
 
         res.json({ message: 'Inicio de sesión exitoso', token });
     } catch (error) {
-        res.status(500).json({ message: 'Error al iniciar sesión', error });
+        res.status(500).json({ message: 'Error al iniciar sesión', error: error.message });
     }
 };
 
 module.exports = {
     login,
     register
-}
+};

@@ -22,7 +22,7 @@ const getCart = async (req, res) => {
         const cart = await Cart.findAll({ where: { userId }, include: Product });
         res.json(cart);
     } catch (error) {
-        res.status(500).json({ message: 'Error al obtener carrito', error });
+        res.status(500).json({ message: 'Error al obtener productos', error: error.message });
     }
 };
 

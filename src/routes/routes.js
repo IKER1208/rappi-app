@@ -18,11 +18,12 @@ route.post('/auth/register', authController.register);
 route.post('/auth/login', authController.login);
 /* === RUTAS PARA CLIENTES === */
 route.get('/catalog', catalogController.getProducts);
-route.post('/cart/add', authMiddleware, roleMiddleware(['cliente']), cartController.addToCart);
-route.put('/cart/update', authMiddleware, roleMiddleware(['cliente']), cartController.updateCart);
-route.get('/cart/:userId', authMiddleware, roleMiddleware(['cliente']), cartController.getCart);
-route.post('/order/create', authMiddleware, roleMiddleware(['cliente']), orderController.createOrder);
-route.get('/order/history/:userId', authMiddleware, roleMiddleware(['cliente']), orderController.getOrderHistory);
+route.post('/catalog', catalogController.postProduct);
+route.post('/cart/add', cartController.addToCart);
+route.put('/cart/update/:userId', cartController.updateCart);
+route.get('/cart/:userId', cartController.getCart);
+route.post('/order/create', orderController.createOrder);
+route.get('/order/history/:userId', orderController.getOrderHistory);
 
 // /* === RUTAS PARA REPARTIDORES === */
 // route.get('/delivery/orders', authMiddleware, roleMiddleware(['repartidor']), deliveryController.getAssignedOrders);

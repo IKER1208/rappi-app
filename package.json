@@ -1,0 +1,32 @@
+{
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "express-validator": "^7.2.1",
+    "jsonwebtoken": "^9.0.2",
+    "mysql2": "^3.12.0",
+    "nodemon": "^3.1.9",
+    "sequelize": "^6.37.5",
+    "sequelize-cli": "^6.6.2",
+    "stripe": "^17.6.0"
+  },
+  "name": "rappi-app",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon src/app.js",
+    "dev": "nodemon -r dotenv/config src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "migrate": "npx sequelize-cli db:migrate --config src/config/db.js",
+    "create:migration": "npx sequelize-cli migration:generate --name",
+    "create:seed": "npx sequelize-cli seed:generate --name",
+    "migrate:undo": "npx sequelize-cli db:migrate:undo --config src/config/db.js",
+    "seed:undo": "npx sequelize-cli db:seed:undo --config src/config/db.js",
+    "seed:all": "npx sequelize-cli db:seed:all --config src/config/db.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}

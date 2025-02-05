@@ -3,7 +3,7 @@ import { useState } from 'react';
 import LoginForm from './components/LoginForm';
 import ProductList from './components/ProductList';
 import Cart from './components/Cart';
-import OrderHistory from './components/OrderHistory';
+import OrderHistory from './components/orderHistory';
 
 function App() {
   const [user, setUser] = useState(null);

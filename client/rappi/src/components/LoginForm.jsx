@@ -1,130 +1,116 @@
-// src/components/LoginForm.jsx
-import react, { useState } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
-import styled from 'styled-components';
 import { FaUserAlt, FaLock } from 'react-icons/fa';
-// Iker puto
+import styled from 'styled-components';
+
 const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-color: #f0f4f8;
 `;
 
 const FormWrapper = styled.div`
-  background: white;
-  padding: 40px;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 400px;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 `;
 
 const Title = styled.h2`
   text-align: center;
-  margin-bottom: 30px;
-  font-size: 24px;
-  color: #333;
 `;
 
 const InputGroup = styled.div`
-  position: relative;
-  margin-bottom: 20px;
-`;
-
-const Input = styled.input`
-  width: 100%;
-  padding: 10px 40px 10px 12px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 16px;
-  outline: none;
-  transition: all 0.3s ease;
-  
-  &:focus {
-    border-color: #007bff;
-  }
+  display: flex;
+  align-items: center;
+  margin: 10px 0;
 `;
 
 const Icon = styled.div`
-  position: absolute;
-  left: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #007bff;
+  margin-right: 10px;
+`;
+
+const Input = styled.input`
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 `;
 
 const Button = styled.button`
   width: 100%;
-  padding: 12px;
+  padding: 10px;
   background-color: #007bff;
-  border: none;
-  border-radius: 4px;
   color: white;
-  font-size: 16px;
+  border: none;
+  border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s;
-  
-  &:hover {
-    background-color: #0056b3;
-  }
+`;
+
+const Message = styled.p`
+  text-align: center;
+  color: ${props => (props.success ? 'green' : 'red')};
 `;
 
 const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [message, setMessage] = useState('');
+  const [success, setSuccess] = useState(false);
 
   const handleSubmit = async (e) => {
-      e.preventDefault();
+    e.preventDefault();
 
-      try {
-          const response = await axios.post('http://localhost/auth/login', {
-              email,
-              password
-          });
+    try {
+      const response = await axios.post(
+        'http://localhost/auth/login',
+        { email, password },
+        { headers: { 'Content-Type': 'application/json' } }
+      );
 
-          // Manejar la respuesta del servidor
-          console.log('Respuesta del servidor:', response.data);
-
-          // Aquí podrías redirigir al usuario o guardar el token de autenticación, etc.
-      } catch (error) {
-          // Manejar errores
-          console.error('Error al hacer login:', error.response ? error.response.data : error.message);
-      }
+      setMessage('Login exitoso');
+      setSuccess(true);
+      console.log('Respuesta del servidor:', response.data);
+      // Aquí podrías redirigir o guardar el token
+    } catch (error) {
+      setMessage('Error en el login');
+      setSuccess(false);
+      console.error('Error al hacer login:', error.response ? error.response.data : error.message);
+    }
   };
 
   return (
-      <Container>
-          <FormWrapper>
-              <Title>Login</Title>
-              <form onSubmit={handleSubmit}>
-                  <InputGroup>
-                      <Icon>
-                          <FaUserAlt />
-                      </Icon>
-                      <Input
-                          type="email"
-                          placeholder="Email"
-                          value={email}
-                          onChange={(e) => setEmail(e.target.value)}
-                      />
-                  </InputGroup>
-                  <InputGroup>
-                      <Icon>
-                          <FaLock />
-                      </Icon>
-                      <Input
-                          type="password"
-                          placeholder="Password"
-                          value={password}
-                          onChange={(e) => setPassword(e.target.value)}
-                      />
-                  </InputGroup>
-                  <Button type="submit">Log In</Button>
-              </form>
-          </FormWrapper>
-      </Container>
+    <Container>
+      <FormWrapper>
+        <Title>Login</Title>
+        <form onSubmit={handleSubmit}>
+          <InputGroup>
+            <Icon>
+              <FaUserAlt />
+            </Icon>
+            <Input
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </InputGroup>
+          <InputGroup>
+            <Icon>
+              <FaLock />
+            </Icon>
+            <Input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </InputGroup>
+          <Button type="submit">Log In</Button>
+        </form>
+        {message && <Message success={success}>{message}</Message>}
+      </FormWrapper>
+    </Container>
   );
 };
 

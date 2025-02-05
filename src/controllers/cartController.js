@@ -25,3 +25,14 @@ exports.getCart = async (req, res) => {
         res.status(500).json({ message: 'Error al obtener carrito', error });
     }
 };
+
+exports.updateCart = async (req, res) => {
+    try {
+
+
+    } catch (error) {
+        res.status(500).json({ message: 'error al editar producto: ', error });
+
+    }
+
+}

@@ -1,8 +1,8 @@
-// src/components/LoginForm.jsx
 import { useState } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import { FaUserAlt, FaLock } from 'react-icons/fa';
+import PropTypes from 'prop-types';
 
 const Container = styled.div`
   display: flex;
@@ -70,63 +70,56 @@ const Button = styled.button`
     background-color: #0056b3;
   }
 `;
-// Iker se la come
+
+import { useNavigate } from "react-router-dom";
+
 const LoginForm = ({ onLogin }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+    const navigate = useNavigate();
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+    const handleSubmit = async (e) => {
+        e.preventDefault();
 
-    try {
-      const response = await axios.post('http://localhost:3001/auth/login', {
-        email,
-        password
-      });
+        if (!email || !password) {
+            alert("Por favor ingresa tu email y contraseña.");
+            return;
+        }
 
-      // Manejar la respuesta del servidor
-      console.log('Respuesta del servidor:', response.data);
+        try {
+            const response = await axios.post('http://localhost:3001/auth/login', { email, password });
+            localStorage.setItem('token', response.data.token);
+            onLogin(response.data.user);
+            navigate("/client/rappi/src/components/Pedidos.jsx");  // 🔄 Redirige a productos después de iniciar sesión
+        } catch (error) {
+            const errorMessage = error.response?.data?.message || "Error desconocido";
+            alert(`Error al iniciar sesión: ${errorMessage}`);
+        }
+    };
 
-      // Aquí podrías redirigir al usuario o guardar el token de autenticación, etc.
-      onLogin(response.data.user);
-    } catch (error) {
-      // Manejar errores
-      console.error('Error al hacer login:', error.response ? error.response.data : error.message);
-    }
-  };
+    return (
+        <Container>
+            <FormWrapper>
+                <Title>Login</Title>
+                <form onSubmit={handleSubmit}>
+                    <InputGroup>
+                        <Icon><FaUserAlt /></Icon>
+                        <Input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                    </InputGroup>
+                    <InputGroup>
+                        <Icon><FaLock /></Icon>
+                        <Input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                    </InputGroup>
+                    <Button type="submit">Log In</Button>
+                </form>
+            </FormWrapper>
+        </Container>
+    );
+};
 
-  return (
-    <Container>
-      <FormWrapper>
-        <Title>Login</Title>
-        <form onSubmit={handleSubmit}>
-          <InputGroup>
-            <Icon>
-              <FaUserAlt />
-            </Icon>
-            <Input
-              type="email"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </InputGroup>
-          <InputGroup>
-            <Icon>
-              <FaLock />
-            </Icon>
-            <Input
-              type="password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </InputGroup>
-          <Button type="submit">Log In</Button>
-        </form>
-      </FormWrapper>
-    </Container>
-  );
+
+LoginForm.propTypes = {
+    onLogin: PropTypes.func.isRequired,
 };
 
 export default LoginForm;

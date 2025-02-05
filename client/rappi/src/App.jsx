@@ -1,9 +1,9 @@
-// src/App.jsx
-import { useState } from 'react';
-import LoginForm from './components/LoginForm';
-import ProductList from './components/ProductList';
-import Cart from './components/Cart';
-import OrderHistory from './components/orderHistory';
+import { useState } from "react";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import LoginForm from "./components/LoginForm";
+import ProductList from "./components/Pedidos";
+import Cart from "./components/Cart";
+import OrderHistory from "./components/orderHistory";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -13,17 +13,20 @@ function App() {
   };
 
   return (
-    <div>
-      {!user ? (
-        <LoginForm onLogin={handleLogin} />
-      ) : (
-        <div>
-          <ProductList />
-          <Cart userId={user.id} />
-          <OrderHistory userId={user.id} />
-        </div>
-      )}
-    </div>
+    <Router>
+      <Routes>
+        {!user ? (
+          <Route path="*" element={<LoginForm onLogin={handleLogin} />} />
+        ) : (
+          <>
+            <Route path="/productos" element={<ProductList />} />
+            <Route path="/carrito" element={<Cart userId={user.id} />} />
+            <Route path="/historial" element={<OrderHistory userId={user.id} />} />
+            <Route path="*" element={<Navigate to="/productos" />} />
+          </>
+        )}
+      </Routes>
+    </Router>
   );
 }
 

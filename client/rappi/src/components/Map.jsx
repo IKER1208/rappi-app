@@ -15,7 +15,7 @@ const GoogleMap = ({ lat, lng }) => {
 
     if (!window.google) {
       const script = document.createElement("script");
-      script.src = `https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap`;
+      script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyBA02aJMvHsIjFgVmU02d4Qi54gbfXpz_E&callback=initMap`;
       script.async = true;
       script.defer = true;
       script.onload = initMap;
